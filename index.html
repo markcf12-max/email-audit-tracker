@@ -184,6 +184,13 @@
       emails.forEach((entry, i) => {
         const safeText = '"' + entry.text.replace(/"/g, '""') + '"';
         const reliableColor = getColorCode(entry.reliable);
+        const personableColor = getColor
+
+    function exportCSV() {
+      let csvContent = "Audit Number,Date,Reliable,Reliable Color,Personable,Personable Color,Fast,Fast Color,Safe,Safe Color,Text\n";
+      emails.forEach((entry, i) => {
+        const safeText = '"' + entry.text.replace(/"/g, '""') + '"';
+        const reliableColor = getColorCode(entry.reliable);
         const personableColor = getColorCode(entry.personable);
         const fastColor = getColorCode(entry.fast);
         const safeColor = getColorCode(entry.safe);

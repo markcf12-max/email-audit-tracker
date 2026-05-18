@@ -15,6 +15,12 @@ function login() {
   }
 }
 
+function logout() {
+  localStorage.removeItem("loggedIn");
+  document.getElementById("trackerSection").style.display = "none";
+  document.getElementById("loginSection").style.display = "block";
+}
+
 window.onload = function() {
   if (localStorage.getItem("loggedIn") === "true") {
     document.getElementById("loginSection").style.display = "none";

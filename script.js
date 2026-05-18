@@ -1,0 +1,74 @@
+let emails = JSON.parse(localStorage.getItem('emails') || '[]');
+let deleteId = null;
+
+// Login system
+function login() {
+  const user = document.getElementById('username').value.trim();
+  const pass = document.getElementById('password').value.trim();
+
+  if (user === "admin" && pass === "1234") {
+    localStorage.setItem("loggedIn", "true");
+    document.getElementById("loginSection").style.display = "none";
+    document.getElementById("trackerSection").style.display = "block";
+  } else {
+    alert("Invalid credentials. Try admin / 1234");
+  }
+}
+
+window.onload = function() {
+  if (localStorage.getItem("loggedIn") === "true") {
+    document.getElementById("loginSection").style.display = "none";
+    document.getElementById("trackerSection").style.display = "block";
+  }
+  renderEmails(emails);
+};
+
+// Audit tracker functions
+function saveEmail() {
+  const text = document.getElementById('emailInput').value.trim();
+  const reliable = document.getElementById('paramReliable').value;
+  const personable = document.getElementById('paramPersonable').value;
+  const fast = document.getElementById('paramFast').value;
+  const safe = document.getElementById('paramSafe').value;
+
+  if (text) {
+    const now = new Date();
+    const entry = { 
+      id: Date.now(),
+      text,
+      reliable: reliable || "Not selected",
+      personable: personable || "Not selected",
+      fast: fast || "Not selected",
+      safe: safe || "Not selected",
+      date: now.toLocaleString() 
+    };
+    emails.push(entry);
+    localStorage.setItem('emails', JSON.stringify(emails));
+    document.getElementById('emailInput').value = '';
+    document.getElementById('paramReliable').value = '';
+    document.getElementById('paramPersonable').value = '';
+    document.getElementById('paramFast').value = '';
+    document.getElementById('paramSafe').value = '';
+    renderEmails(emails);
+  }
+}
+
+function renderEmails(listToShow) {
+  const list = document.getElementById('emailList');
+  list.innerHTML = '';
+  listToShow.forEach((entry) => {
+    const summary = entry.text.length > 50 ? entry.text.substring(0, 50) + "..." : entry.text;
+    list.innerHTML += `
+      <div class="email-box">
+        <div class="summary" onclick="toggleEmail(${entry.id})">${summary}</div>
+        <div class="date">Saved on: ${entry.date}</div>
+        <div><strong>Reliable:</strong> ${entry.reliable}</div>
+        <div><strong>Personable:</strong> ${entry.personable}</div>
+        <div><strong>Fast:</strong> ${entry.fast}</div>
+        <div><strong>Safe & Secure:</strong> ${entry.safe}</div>
+        <textarea id="email${entry.id}" style="display:none;" onchange="editEmail(${entry.id}, this.value)">${entry.text}</textarea>
+        <button class="btn btn-danger" onclick="openModal(${entry.id})">Delete</button>
+      </div>
+    `;
+  });
+  document.get

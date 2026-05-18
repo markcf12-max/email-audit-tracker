@@ -86,6 +86,7 @@
 
   <script>
     let emails = JSON.parse(localStorage.getItem('emails') || '[]');
+    let deleteId = null;
 
     function saveEmail() {
       const text = document.getElementById('emailInput').value.trim();
@@ -98,7 +99,7 @@
         const now = new Date();
         const entry = { 
           id: Date.now(),
-          text: text,
+          text,
           reliable: reliable || "Not selected",
           personable: personable || "Not selected",
           fast: fast || "Not selected",
@@ -130,7 +131,7 @@
             <div><strong>Fast:</strong> ${entry.fast}</div>
             <div><strong>Safe & Secure:</strong> ${entry.safe}</div>
             <textarea id="email${entry.id}" style="display:none;" onchange="editEmail(${entry.id}, this.value)">${entry.text}</textarea>
-            <button class="btn btn-danger" onclick="confirmDelete(${entry.id})">Delete</button>
+            <button class="btn btn-danger" onclick="openModal(${entry.id})">Delete</button>
           </div>
         `;
       });
@@ -151,16 +152,22 @@
       }
     }
 
-    function confirmDelete(id) {
-      if (confirm("Are you sure you want to delete this audit?")) {
-        deleteEmail(id);
-      }
+    // Modal functions
+    function openModal(id) {
+      deleteId = id;
+      document.getElementById('deleteModal').style.display = 'block';
     }
-
-    function deleteEmail(id) {
-      emails = emails.filter(e => e.id !== id);
-      localStorage.setItem('emails', JSON.stringify(emails));
-      renderEmails(emails);
+    function closeModal() {
+      deleteId = null;
+      document.getElementById('deleteModal').style.display = 'none';
+    }
+    function confirmDelete() {
+      if (deleteId !== null) {
+        emails = emails.filter(e => e.id !== deleteId);
+        localStorage.setItem('emails', JSON.stringify(emails));
+        renderEmails(emails);
+      }
+      closeModal();
     }
 
     function searchEmails() {

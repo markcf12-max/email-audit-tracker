@@ -87,6 +87,9 @@
   <div id="emailList"></div>
   <h3>Total Audits: <span id="auditCount">0</span></h3>
 
+  
+</body>
+
   <script>
     let emails = JSON.parse(localStorage.getItem('emails') || '[]');
 
@@ -211,5 +214,4 @@
     // Initial render when page loads
     renderEmails(emails);
   </script>
-</body>
 </html>

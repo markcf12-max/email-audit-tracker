@@ -75,6 +75,7 @@
     </select>
   </div>
 
+  <!-- Single Save Button -->
   <button class="btn" onclick="saveEmail()">Save Audit</button>
   
   <h2>Search Audits</h2>
@@ -172,40 +173,31 @@
       renderEmails(filtered);
     }
 
-    function getColorCode(value) {
-  if (!value) return ""; // handles undefined or null
-  const val = value.toLowerCase();
-  if (val === "no op") return "Green";
-  if (val === "coaching op") return "Yellow";
-  if (val === "" || val === "not selected") return "";
-  return "Red";
-}
+        function exportCSV() {
+      // Define CSV header
+      let csvContent = "Audit Number,Date,Reliable,Personable,Fast,Safe,Text\n";
+      
+      emails.forEach((entry, i) => {
+        // Escape quotes in the email text
+        const safeText = '"' + entry.text.replace(/"/g, '""') + '"';
+        
+        // Build each row with parameters and text
+        csvContent += `${i+1},"${entry.date}","${entry.reliable}","${entry.personable}","${entry.fast}","${entry.safe}",${safeText}\n`;
+      });
 
-     function exportCSV() {
-  let csvContent = "Audit Number,Date,Reliable,Reliable Color,Personable,Personable Color,Fast,Fast Color,Safe,Safe Color,Text\n";
-  
-  emails.forEach((entry, i) => {
-    const safeText = '"' + entry.text.replace(/"/g, '""') + '"';
-    const reliableColor = getColorCode(entry.reliable);
-    const personableColor = getColorCode(entry.personable);
-    const fastColor = getColorCode(entry.fast);
-    const safeColor = getColorCode(entry.safe);
+      // Create and download the CSV file
+      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+      const link = document.createElement("a");
+      const url = URL.createObjectURL(blob);
+      link.setAttribute("href", url);
+      link.setAttribute("download", "audits_export.csv");
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
 
-    csvContent += `${i+1},"${entry.date}","${entry.reliable}","${reliableColor}","${entry.personable}","${personableColor}","${entry.fast}","${fastColor}","${entry.safe}","${safeColor}",${safeText}\n`;
-  });
-
-  const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-  const link = document.createElement("a");
-  const url = URL.createObjectURL(blob);
-  link.setAttribute("href", url);
-  link.setAttribute("download", "audits_export.csv");
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-}
-
-// Initial render when page loads
-renderEmails(emails);
-</script>
+    // Initial render when page loads
+    renderEmails(emails);
+  </script>
 </body>
 </html>

@@ -1,87 +1,88 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Email Audit Tracker - 4 Forms</title>
+  <title>Email Audit Tracker - 4 Parameters</title>
   <style>
     body { font-family: Arial, sans-serif; margin: 20px; background: #f9f9f9; }
-    .audit-form { background: #fff; border: 1px solid #ddd; padding: 15px; margin: 10px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); width: 45%; display: inline-block; vertical-align: top; }
-    textarea { width: 100%; height: 100px; padding: 10px; border-radius: 6px; border: 1px solid #ccc; }
-    select { width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #ccc; margin-top: 5px; }
-    .btn { background-color: #0078d7; color: white; border: none; padding: 8px 12px; margin-top: 8px; border-radius: 6px; cursor: pointer; font-size: 14px; }
+    textarea { width: 100%; height: 120px; padding: 10px; border-radius: 6px; border: 1px solid #ccc; }
+    .email-box { background: #fff; border: 1px solid #ddd; padding: 15px; margin: 10px 0; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+    .summary { font-weight: bold; cursor: pointer; color: #0078d7; }
+    .date { font-size: 12px; color: gray; margin-top: 5px; }
+    .btn { background-color: #0078d7; color: white; border: none; padding: 10px 16px; margin: 5px 5px 5px 0; border-radius: 6px; cursor: pointer; font-size: 14px; }
     .btn:hover { background-color: #005a9e; }
     .btn-danger { background-color: #d9534f; }
     .btn-danger:hover { background-color: #b52b27; }
-    .email-box { background: #fff; border: 1px solid #ddd; padding: 15px; margin: 10px 0; border-radius: 8px; }
-    .summary { font-weight: bold; cursor: pointer; color: #0078d7; }
-    .date { font-size: 12px; color: gray; margin-top: 5px; }
+    select { width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #ccc; margin-top: 5px; }
   </style>
 </head>
 <body>
-  <h1>Email Audit Tracker (4 Forms)</h1>
-
-  <!-- Four audit forms -->
-  <div class="audit-form">
-    <h3>Audit Form 1</h3>
-    <textarea id="emailInput1" placeholder="Paste audited email..."></textarea>
-    <select id="parameterSelect1">
-      <option value="">-- Choose Parameter --</option>
-      <optgroup label="Reliable">
-        <option>Did not understand the intent</option>
-        <option>Did not use the tool properly</option>
-        <option>Incorrect information/solution provided</option>
-        <option>Incorrect ticket creation</option>
-        <option>Incorrect workgroup/staging</option>
-        <option>Unnecessary endorsement</option>
-        <option>No OP</option>
-        <option>Coaching op</option>
-      </optgroup>
-      <optgroup label="Personable">
-        <option>Customer validation and empathy gap</option>
-        <option>Did not adjust the tone/pace to match the customer</option>
-        <option>Did not adjust to the customer language</option>
-        <option>Negative words, phrasing and limitations</option>
-        <option>Unfriendly/discourteous/sarcastic</option>
-        <option>Sounded transactional or robotic</option>
-        <option>Coaching op</option>
-      </optgroup>
-      <optgroup label="Fast">
-        <option>Delayed ticket creation/staging</option>
-        <option>No ticket created</option>
-        <option>No OP</option>
-        <option>Coaching op</option>
-      </optgroup>
-      <optgroup label="Safe and Secure">
-        <option>Sounded Confident</option>
-        <option>Vague Explanation</option>
-        <option>Did not involve the customer in an engaging experience</option>
-        <option>No OP</option>
-        <option>Coaching op</option>
-      </optgroup>
+  <h1>Email Audit Tracker</h1>
+  
+  <!-- Audit entry form -->
+  <textarea id="emailInput" placeholder="Paste or type your audited email here..."></textarea><br>
+  
+  <!-- Parameter dropdowns -->
+  <div class="email-box">
+    <label><strong>Reliable</strong></label>
+    <select id="paramReliable">
+      <option value="">-- Select --</option>
+      <option>Did not understand the intent</option>
+      <option>Did not use the tool properly</option>
+      <option>Incorrect information/solution provided</option>
+      <option>Incorrect ticket creation</option>
+      <option>Incorrect workgroup/staging</option>
+      <option>Unnecessary endorsement</option>
+      <option>No OP</option>
+      <option>Coaching op</option>
     </select>
-    <button class="btn" onclick="saveEmail(1)">Save Audit</button>
   </div>
 
-  <div class="audit-form">
-    <h3>Audit Form 2</h3>
-    <textarea id="emailInput2" placeholder="Paste audited email..."></textarea>
-    <select id="parameterSelect2"></select>
-    <button class="btn" onclick="saveEmail(2)">Save Audit</button>
+  <div class="email-box">
+    <label><strong>Personable</strong></label>
+    <select id="paramPersonable">
+      <option value="">-- Select --</option>
+      <option>Customer validation and empathy gap</option>
+      <option>Did not adjust the tone/pace to match the customer</option>
+      <option>Did not adjust to the customer language</option>
+      <option>Negative words, phrasing and limitations</option>
+      <option>Unfriendly/discourteous/sarcastic</option>
+      <option>Sounded transactional or robotic</option>
+      <option>No OP</option>
+      <option>Coaching op</option>
+    </select>
   </div>
 
-  <div class="audit-form">
-    <h3>Audit Form 3</h3>
-    <textarea id="emailInput3" placeholder="Paste audited email..."></textarea>
-    <select id="parameterSelect3"></select>
-    <button class="btn" onclick="saveEmail(3)">Save Audit</button>
+  <div class="email-box">
+    <label><strong>Fast</strong></label>
+    <select id="paramFast">
+      <option value="">-- Select --</option>
+      <option>Delayed ticket creation/staging</option>
+      <option>No ticket created</option>
+      <option>No OP</option>
+      <option>Coaching op</option>
+    </select>
   </div>
 
-  <div class="audit-form">
-    <h3>Audit Form 4</h3>
-    <textarea id="emailInput4" placeholder="Paste audited email..."></textarea>
-    <select id="parameterSelect4"></select>
-    <button class="btn" onclick="saveEmail(4)">Save Audit</button>
+  <div class="email-box">
+    <label><strong>Safe and Secure</strong></label>
+    <select id="paramSafe">
+      <option value="">-- Select --</option>
+      <option>Sounded Confident</option>
+      <option>Vague Explanation</option>
+      <option>Did not involve the customer in an engaging experience</option>
+      <option>No OP</option>
+      <option>Coaching op</option>
+    </select>
   </div>
 
+  <button class="btn" onclick="saveEmail()">Save Audit</button>
+  
+  <h2>Search Audits</h2>
+  <input type="text" id="searchInput" placeholder="Enter keyword..." style="padding:8px; border-radius:6px; border:1px solid #ccc;">
+  <button class="btn" onclick="searchEmails()">Search</button>
+  <button class="btn" onclick="renderEmails(emails)">Show All</button>
+  <button class="btn" onclick="exportCSV()">Export Excel (CSV)</button>
+  
   <h2>Saved Audits</h2>
   <div id="emailList"></div>
   <h3>Total Audits: <span id="auditCount">0</span></h3>
@@ -89,30 +90,31 @@
   <script>
     let emails = JSON.parse(localStorage.getItem('emails') || '[]');
 
-    // Clone parameter options into all dropdowns
-    function cloneOptions() {
-      const base = document.getElementById('parameterSelect1').innerHTML;
-      for (let i = 2; i <= 4; i++) {
-        document.getElementById('parameterSelect' + i).innerHTML = base;
-      }
-    }
-    cloneOptions();
+    function saveEmail() {
+      const text = document.getElementById('emailInput').value.trim();
+      const reliable = document.getElementById('paramReliable').value;
+      const personable = document.getElementById('paramPersonable').value;
+      const fast = document.getElementById('paramFast').value;
+      const safe = document.getElementById('paramSafe').value;
 
-    function saveEmail(formNumber) {
-      const text = document.getElementById('emailInput' + formNumber).value.trim();
-      const parameter = document.getElementById('parameterSelect' + formNumber).value;
       if (text) {
         const now = new Date();
-        const entry = {
-          id: Date.now() + formNumber,
+        const entry = { 
+          id: Date.now(),
           text: text,
-          parameter: parameter || "Not selected",
-          date: now.toLocaleString()
+          reliable: reliable || "Not selected",
+          personable: personable || "Not selected",
+          fast: fast || "Not selected",
+          safe: safe || "Not selected",
+          date: now.toLocaleString() 
         };
         emails.push(entry);
         localStorage.setItem('emails', JSON.stringify(emails));
-        document.getElementById('emailInput' + formNumber).value = '';
-        document.getElementById('parameterSelect' + formNumber).value = '';
+        document.getElementById('emailInput').value = '';
+        document.getElementById('paramReliable').value = '';
+        document.getElementById('paramPersonable').value = '';
+        document.getElementById('paramFast').value = '';
+        document.getElementById('paramSafe').value = '';
         renderEmails(emails);
       }
     }
@@ -126,7 +128,10 @@
           <div class="email-box">
             <div class="summary" onclick="toggleEmail(${entry.id})">${summary}</div>
             <div class="date">Saved on: ${entry.date}</div>
-            <div><strong>Parameter:</strong> ${entry.parameter}</div>
+            <div><strong>Reliable:</strong> ${entry.reliable}</div>
+            <div><strong>Personable:</strong> ${entry.personable}</div>
+            <div><strong>Fast:</strong> ${entry.fast}</div>
+            <div><strong>Safe & Secure:</strong> ${entry.safe}</div>
             <textarea id="email${entry.id}" style="display:none;" onchange="editEmail(${entry.id}, this.value)">${entry.text}</textarea>
             <button class="btn btn-danger" onclick="deleteEmail(${entry.id})">Delete</button>
           </div>
@@ -155,7 +160,43 @@
       renderEmails(emails);
     }
 
-    renderEmails(emails);
-  </script>
-</body>
-</html>
+    function searchEmails() {
+      const keyword = document.getElementById('searchInput').value.toLowerCase();
+      const filtered = emails.filter(entry => 
+        entry.text.toLowerCase().includes(keyword) ||
+        entry.reliable.toLowerCase().includes(keyword) ||
+        entry.personable.toLowerCase().includes(keyword) ||
+        entry.fast.toLowerCase().includes(keyword) ||
+        entry.safe.toLowerCase().includes(keyword)
+      );
+      renderEmails(filtered);
+    }
+
+    function getColorCode(value) {
+      if (value.toLowerCase() === "no op") return "Green";
+      if (value.toLowerCase() === "coaching op") return "Yellow";
+      if (value === "" || value === "Not selected") return "";
+      return "Red";
+    }
+
+     function exportCSV() {
+      let csvContent = "Audit Number,Date,Reliable,Reliable Color,Personable,Personable Color,Fast,Fast Color,Safe,Safe Color,Text\n";
+      emails.forEach((entry, i) => {
+        const safeText = '"' + entry.text.replace(/"/g, '""') + '"';
+        const reliableColor = getColorCode(entry.reliable);
+        const personableColor = getColorCode(entry.personable);
+        const fastColor = getColorCode(entry.fast);
+        const safeColor = getColorCode(entry.safe);
+
+        csvContent += `${i+1},"${entry.date}","${entry.reliable}","${reliableColor}","${entry.personable}","${personableColor}","${entry.fast}","${fastColor}","${entry.safe}","${safeColor}",${safeText}\n`;
+      });
+
+      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+      const link = document.createElement("a");
+      const url = URL.createObjectURL(blob);
+      link.setAttribute("href", url);
+      link.setAttribute("download", "audits_export.csv");
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }

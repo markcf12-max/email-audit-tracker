@@ -134,7 +134,7 @@
             <div><strong>Fast:</strong> ${entry.fast}</div>
             <div><strong>Safe & Secure:</strong> ${entry.safe}</div>
             <textarea id="email${entry.id}" style="display:none;" onchange="editEmail(${entry.id}, this.value)">${entry.text}</textarea>
-            <button class="btn btn-danger" onclick="deleteEmail(${entry.id})">Delete</button>
+            <button class="btn btn-danger" onclick="confirmDelete(${entry.id})">Delete</button>
           </div>
         `;
       });
@@ -152,6 +152,12 @@
         entry.text = newText;
         localStorage.setItem('emails', JSON.stringify(emails));
         renderEmails(emails);
+      }
+    }
+
+    function confirmDelete(id) {
+      if (confirm("Are you sure you want to delete this audit?")) {
+        deleteEmail(id);
       }
     }
 

@@ -28,7 +28,47 @@
 <body>
   <h1>Email Audit Tracker</h1>
   
+  <!-- Audit entry form -->
   <textarea id="emailInput" placeholder="Paste or type your audited email here..."></textarea><br>
+  
+  <!-- Parameter dropdown -->
+  <label><strong>Select Parameter</strong></label>
+  <select id="parameterSelect">
+    <option value="">-- Choose Parameter --</option>
+    <optgroup label="Reliable (Irrelevant Solution)">
+      <option>Did not understand the intent</option>
+      <option>Did not use the tool properly</option>
+      <option>Incorrect information/solution provided</option>
+      <option>Incorrect ticket creation</option>
+      <option>Incorrect workgroup/staging</option>
+      <option>Unnecessary endorsement</option>
+      <option>No OP</option>
+      <option>Coaching op</option>
+    </optgroup>
+    <optgroup label="Personable (Poor Listening Skills)">
+      <option>Customer validation and empathy gap</option>
+      <option>Did not adjust the tone/pace to match the customer</option>
+      <option>Did not adjust to the customer language</option>
+      <option>Negative words, phrasing and limitations</option>
+      <option>Unfriendly/discourteous/sarcastic</option>
+      <option>Sounded transactional or robotic</option>
+      <option>Coaching op</option>
+    </optgroup>
+    <optgroup label="Fast (Untimely Solution-ZTP)">
+      <option>Delayed ticket creation/staging</option>
+      <option>No ticket created</option>
+      <option>No OP</option>
+      <option>Coaching op</option>
+    </optgroup>
+    <optgroup label="Safe and Secure (Unclear Solution)">
+      <option>Sounded Confident</option>
+      <option>Vague Explanation</option>
+      <option>Did not involve the customer in an engaging experience</option>
+      <option>No OP</option>
+      <option>Coaching op</option>
+    </optgroup>
+  </select><br><br>
+  
   <button class="btn" onclick="saveEmail()">Save Email</button>
   
   <h2>Search Audits</h2>
@@ -43,76 +83,24 @@
   
   <h3>Total Audits: <span id="auditCount">0</span></h3>
 
-  <!-- New Evaluation Section -->
-  <h2>Solution Parameters</h2>
-
-  <div class="email-box">
-    <label><strong>Reliable</strong></label>
-    <select>
-      <option value="">-- Select --</option>
-      <option>Did not understand the intent</option>
-      <option>Did not use the tool properly</option>
-      <option>Incorrect information/solution provided</option>
-      <option>Incorrect ticket creation</option>
-      <option>Incorrect workgroup/staging</option>
-      <option>Unnecessary endorsement</option>
-      <option>No OP</option>
-      <option>Coaching op</option>
-    </select>
-  </div>
-
-  <div class="email-box">
-    <label><strong>Personable</strong></label>
-    <select>
-      <option value="">-- Select --</option>
-      <option>Customer validation and empathy gap</option>
-      <option>Did not adjust the tone/pace to match the customer</option>
-      <option>Did not adjust to the customer language</option>
-      <option>Negative words, phrasing and limitations</option>
-      <option>Unfriendly/discourteous/sarcastic</option>
-      <option>Sounded transactional or robotic</option>
-      <option>Coaching op</option>
-    </select>
-  </div>
-
-  <div class="email-box">
-    <label><strong>Fast</strong></label>
-    <select>
-      <option value="">-- Select --</option>
-      <option>Delayed ticket creation/staging</option>
-      <option>No ticket created</option>
-      <option>No OP</option>
-      <option>Coaching op</option>
-    </select>
-  </div>
-
-  <div class="email-box">
-    <label><strong>Safe and Secure</strong></label>
-    <select>
-      <option value="">-- Select --</option>
-      <option>Sounded Confident</option>
-      <option>Vague Explanation</option>
-      <option>Did not involve the customer in an engaging experience</option>
-      <option>No OP</option>
-      <option>Coaching op</option>
-    </select>
-  </div>
-
   <script>
     let emails = JSON.parse(localStorage.getItem('emails') || '[]');
 
     function saveEmail() {
       const text = document.getElementById('emailInput').value.trim();
+      const parameter = document.getElementById('parameterSelect').value;
       if (text) {
         const now = new Date();
         const entry = { 
-          id: Date.now(), // unique ID
-          text: text, 
+          id: Date.now(),
+          text: text,
+          parameter: parameter || "Not selected",
           date: now.toLocaleString() 
         };
         emails.push(entry);
         localStorage.setItem('emails', JSON.stringify(emails));
         document.getElementById('emailInput').value = '';
+        document.getElementById('parameterSelect').value = '';
         renderEmails(emails);
       }
     }
@@ -126,6 +114,7 @@
           <div class="email-box">
             <div class="summary" onclick="toggleEmail(${entry.id})">${summary}</div>
             <div class="date">Saved on: ${entry.date}</div>
+            <div><strong>Parameter:</strong> ${entry.parameter}</div>
             <textarea id="email${entry.id}" style="display:none;" onchange="editEmail(${entry.id}, this.value)">${entry.text}</textarea>
             <button class="btn btn-danger" onclick="deleteEmail(${entry.id})">Delete</button>
           </div>
@@ -156,13 +145,16 @@
 
     function searchEmails() {
       const keyword = document.getElementById('searchInput').value.toLowerCase();
-      const filtered = emails.filter(entry => entry.text.toLowerCase().includes(keyword));
+      const filtered = emails.filter(entry => 
+        entry.text.toLowerCase().includes(keyword) || 
+        entry.parameter.toLowerCase().includes(keyword)
+      );
       renderEmails(filtered);
     }
 
     function exportAudits() {
       let content = emails.map((entry, i) => 
-        `Audit #${i+1}\nDate: ${entry.date}\nText:\n${entry.text}\n\n`
+        `Audit #${i+1}\nDate: ${entry.date}\nParameter: ${entry.parameter}\nText:\n${entry.text}\n\n`
       ).join("");
       
       const blob = new Blob([content], { type: "text/plain" });
@@ -173,10 +165,10 @@
     }
 
     function exportCSV() {
-      let csvContent = "Audit Number,Date,Text\n";
+      let csvContent = "Audit Number,Date,Parameter,Text\n";
       emails.forEach((entry, i) => {
         const safeText = '"' + entry.text.replace(/"/g, '""') + '"';
-        csvContent += `${i+1},"${entry.date}",${safeText}\n`;
+        csvContent += `${i+1},"${entry.date}","${entry.parameter}",${safeText}\n`;
       });
       
       const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
@@ -189,7 +181,6 @@
       document.body.removeChild(link);
     }
 
-    // Initial render
     renderEmails(emails);
   </script>
 </body>

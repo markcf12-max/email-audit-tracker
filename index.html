@@ -179,7 +179,7 @@
       return "Red";
     }
 
-     function exportCSV() {
+    function exportCSV() {
       let csvContent = "Audit Number,Date,Reliable,Reliable Color,Personable,Personable Color,Fast,Fast Color,Safe,Safe Color,Text\n";
       emails.forEach((entry, i) => {
         const safeText = '"' + entry.text.replace(/"/g, '""') + '"';
@@ -200,3 +200,9 @@
       link.click();
       document.body.removeChild(link);
     }
+
+    // Initial render when page loads
+    renderEmails(emails);
+  </script>
+</body>
+</html>

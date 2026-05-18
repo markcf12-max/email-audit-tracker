@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Email Audit Tracker</title>
-  <link rel="stylesheet" href="style.css">
+  <title>Login Test</title>
 </head>
 <body>
   <!-- Login Section -->
@@ -10,72 +9,35 @@
     <h2>Login</h2>
     <input type="text" id="username" placeholder="Username">
     <input type="password" id="password" placeholder="Password">
-    <button class="btn" onclick="login()">Login</button>
+    <button onclick="login()">Login</button>
   </div>
 
   <!-- Tracker Section (hidden until login) -->
   <div id="trackerSection" style="display:none;">
     <h1>Email Audit Tracker</h1>
-
-    <!-- Floating audit counter -->
-    <div id="auditCounter">Total Audits: <span id="auditCount">0</span></div>
-
-    <!-- Audit entry form -->
-    <textarea id="emailInput" placeholder="Paste or type your audited email here..."></textarea><br>
-
-    <!-- Parameter dropdowns -->
-    <label>Reliable:</label>
-    <select id="paramReliable">
-      <option value="">Select...</option>
-      <option value="Yes">Yes</option>
-      <option value="No">No</option>
-    </select>
-
-    <label>Personable:</label>
-    <select id="paramPersonable">
-      <option value="">Select...</option>
-      <option value="Yes">Yes</option>
-      <option value="No">No</option>
-    </select>
-
-    <label>Fast:</label>
-    <select id="paramFast">
-      <option value="">Select...</option>
-      <option value="Yes">Yes</option>
-      <option value="No">No</option>
-    </select>
-
-    <label>Safe:</label>
-    <select id="paramSafe">
-      <option value="">Select...</option>
-      <option value="Yes">Yes</option>
-      <option value="No">No</option>
-    </select>
-
-    <button class="btn" onclick="saveEmail()">Save Audit</button>
-
-    <h2>Search Audits</h2>
-    <input type="text" id="searchInput" placeholder="Enter keyword...">
-    <button class="btn" onclick="searchEmails()">Search</button>
-    <button class="btn" onclick="renderEmails(emails)">Show All</button>
-    <button class="btn" onclick="exportCSV()">Export Excel (CSV)</button>
-
-    <h2>Saved Audits</h2>
-    <div id="emailList"></div>
-
-    <!-- Delete confirmation modal -->
-    <div id="deleteModal" class="modal">
-      <div class="modal-content">
-        <p>Are you sure you want to delete this audit?</p>
-        <div class="modal-buttons">
-          <button class="btn btn-danger" onclick="confirmDelete()">Yes, Delete</button>
-          <button class="btn" onclick="closeModal()">Cancel</button>
-        </div>
-      </div>
-    </div>
+    <p>Welcome! You are logged in.</p>
   </div>
 
-  <!-- External JS -->
-  <script src="script.js"></script>
+  <script>
+    function login() {
+      const user = document.getElementById('username').value.trim();
+      const pass = document.getElementById('password').value.trim();
+
+      if (user === "admin" && pass === "1234") {
+        localStorage.setItem("loggedIn", "true");
+        document.getElementById("loginSection").style.display = "none";
+        document.getElementById("trackerSection").style.display = "block";
+      } else {
+        alert("Invalid credentials. Try admin / 1234");
+      }
+    }
+
+    window.onload = function() {
+      if (localStorage.getItem("loggedIn") === "true") {
+        document.getElementById("loginSection").style.display = "none";
+        document.getElementById("trackerSection").style.display = "block";
+      }
+    };
+  </script>
 </body>
 </html>

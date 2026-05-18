@@ -71,4 +71,68 @@ function renderEmails(listToShow) {
       </div>
     `;
   });
-  document.get
+  document.getElementById('auditCount').innerText = emails.length;
+}
+
+function toggleEmail(id) {
+  const box = document.getElementById('email' + id);
+  if (box) {
+    box.style.display = box.style.display === 'none' ? 'block' : 'none';
+  }
+}
+
+function editEmail(id, newText) {
+  const entry = emails.find(e => e.id === id);
+  if (entry) {
+    entry.text = newText;
+    localStorage.setItem('emails', JSON.stringify(emails));
+    renderEmails(emails);
+  }
+}
+
+// Modal functions
+function openModal(id) {
+  deleteId = id;
+  document.getElementById('deleteModal').style.display = 'block';
+}
+function closeModal() {
+  deleteId = null;
+  document.getElementById('deleteModal').style.display = 'none';
+}
+function confirmDelete() {
+  if (deleteId !== null) {
+    emails = emails.filter(e => e.id !== deleteId);
+    localStorage.setItem('emails', JSON.stringify(emails));
+    renderEmails(emails);
+  }
+  closeModal();
+}
+
+function searchEmails() {
+  const keyword = document.getElementById('searchInput').value.toLowerCase();
+  const filtered = emails.filter(entry => 
+    entry.text.toLowerCase().includes(keyword) ||
+    entry.reliable.toLowerCase().includes(keyword) ||
+    entry.personable.toLowerCase().includes(keyword) ||
+    entry.fast.toLowerCase().includes(keyword) ||
+    entry.safe.toLowerCase().includes(keyword)
+  );
+  renderEmails(filtered);
+}
+
+function exportCSV() {
+  let csvContent = "Audit Number,Date,Reliable,Personable,Fast,Safe,Text\n";
+  emails.forEach((entry, i) => {
+    const safeText = '"' + entry.text.replace(/"/g, '""') + '"';
+    csvContent += `${i+1},"${entry.date}","${entry.reliable}","${entry.personable}","${entry.fast}","${entry.safe}",${safeText}\n`;
+  });
+
+  const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+  const link = document.createElement("a");
+  const url = URL.createObjectURL(blob);
+  link.setAttribute("href", url);
+  link.setAttribute("download", "audits_export.csv");
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}

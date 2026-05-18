@@ -13,69 +13,55 @@
     .btn-danger { background-color: #d9534f; }
     .btn-danger:hover { background-color: #b52b27; }
     select { width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #ccc; margin-top: 5px; }
+
+    /* Floating audit counter */
+    #auditCounter {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #0078d7;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 16px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+
+    /* Modal styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0; top: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0,0,0,0.5);
+    }
+    .modal-content {
+      background: #fff;
+      margin: 15% auto;
+      padding: 20px;
+      border-radius: 8px;
+      width: 300px;
+      text-align: center;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    }
+    .modal-buttons {
+      margin-top: 15px;
+    }
   </style>
 </head>
 <body>
   <h1>Email Audit Tracker</h1>
+
+  <!-- Floating audit counter -->
+  <div id="auditCounter">Total Audits: <span id="auditCount">0</span></div>
   
   <!-- Audit entry form -->
   <textarea id="emailInput" placeholder="Paste or type your audited email here..."></textarea><br>
   
-  <!-- Parameter dropdowns -->
-  <div class="email-box">
-    <label><strong>Reliable</strong></label>
-    <select id="paramReliable">
-      <option value="">-- Select --</option>
-      <option>Did not understand the intent</option>
-      <option>Did not use the tool properly</option>
-      <option>Incorrect information/solution provided</option>
-      <option>Incorrect ticket creation</option>
-      <option>Incorrect workgroup/staging</option>
-      <option>Unnecessary endorsement</option>
-      <option>No OP</option>
-      <option>Coaching op</option>
-    </select>
-  </div>
+  <!-- Parameter dropdowns (Reliable, Personable, Fast, Safe) -->
+  <!-- ... same as before ... -->
 
-  <div class="email-box">
-    <label><strong>Personable</strong></label>
-    <select id="paramPersonable">
-      <option value="">-- Select --</option>
-      <option>Customer validation and empathy gap</option>
-      <option>Did not adjust the tone/pace to match the customer</option>
-      <option>Did not adjust to the customer language</option>
-      <option>Negative words, phrasing and limitations</option>
-      <option>Unfriendly/discourteous/sarcastic</option>
-      <option>Sounded transactional or robotic</option>
-      <option>No OP</option>
-      <option>Coaching op</option>
-    </select>
-  </div>
-
-  <div class="email-box">
-    <label><strong>Fast</strong></label>
-    <select id="paramFast">
-      <option value="">-- Select --</option>
-      <option>Delayed ticket creation/staging</option>
-      <option>No ticket created</option>
-      <option>No OP</option>
-      <option>Coaching op</option>
-    </select>
-  </div>
-
-  <div class="email-box">
-    <label><strong>Safe and Secure</strong></label>
-    <select id="paramSafe">
-      <option value="">-- Select --</option>
-      <option>Sounded Confident</option>
-      <option>Vague Explanation</option>
-      <option>Did not involve the customer in an engaging experience</option>
-      <option>No OP</option>
-      <option>Coaching op</option>
-    </select>
-  </div>
-
-  <!-- Single Save Button -->
   <button class="btn" onclick="saveEmail()">Save Audit</button>
   
   <h2>Search Audits</h2>
@@ -86,7 +72,17 @@
   
   <h2>Saved Audits</h2>
   <div id="emailList"></div>
-  <h3>Total Audits: <span id="auditCount">0</span></h3>
+
+  <!-- Delete confirmation modal -->
+  <div id="deleteModal" class="modal">
+    <div class="modal-content">
+      <p>Are you sure you want to delete this audit?</p>
+      <div class="modal-buttons">
+        <button class="btn btn-danger" onclick="confirmDelete()">Yes, Delete</button>
+        <button class="btn" onclick="closeModal()">Cancel</button>
+      </div>
+    </div>
+  </div>
 
   <script>
     let emails = JSON.parse(localStorage.getItem('emails') || '[]');

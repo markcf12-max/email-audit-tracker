@@ -87,9 +87,6 @@
   <div id="emailList"></div>
   <h3>Total Audits: <span id="auditCount">0</span></h3>
 
-  
-</body>
-
   <script>
     let emails = JSON.parse(localStorage.getItem('emails') || '[]');
 
@@ -182,36 +179,31 @@
       return "Red";
     }
 
-    function exportCSV() {
-      let csvContent = "Audit Number,Date,Reliable,Reliable Color,Personable,Personable Color,Fast,Fast Color,Safe,Safe Color,Text\n";
-      emails.forEach((entry, i) => {
-        const safeText = '"' + entry.text.replace(/"/g, '""') + '"';
-        const reliableColor = getColorCode(entry.reliable);
-        const personableColor = getColor
+     function exportCSV() {
+  let csvContent = "Audit Number,Date,Reliable,Reliable Color,Personable,Personable Color,Fast,Fast Color,Safe,Safe Color,Text\n";
+  
+  emails.forEach((entry, i) => {
+    const safeText = '"' + entry.text.replace(/"/g, '""') + '"';
+    const reliableColor = getColorCode(entry.reliable);
+    const personableColor = getColorCode(entry.personable);
+    const fastColor = getColorCode(entry.fast);
+    const safeColor = getColorCode(entry.safe);
 
-    function exportCSV() {
-      let csvContent = "Audit Number,Date,Reliable,Reliable Color,Personable,Personable Color,Fast,Fast Color,Safe,Safe Color,Text\n";
-      emails.forEach((entry, i) => {
-        const safeText = '"' + entry.text.replace(/"/g, '""') + '"';
-        const reliableColor = getColorCode(entry.reliable);
-        const personableColor = getColorCode(entry.personable);
-        const fastColor = getColorCode(entry.fast);
-        const safeColor = getColorCode(entry.safe);
+    csvContent += `${i+1},"${entry.date}","${entry.reliable}","${reliableColor}","${entry.personable}","${personableColor}","${entry.fast}","${fastColor}","${entry.safe}","${safeColor}",${safeText}\n`;
+  });
 
-        csvContent += `${i+1},"${entry.date}","${entry.reliable}","${reliableColor}","${entry.personable}","${personableColor}","${entry.fast}","${fastColor}","${entry.safe}","${safeColor}",${safeText}\n`;
-      });
+  const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+  const link = document.createElement("a");
+  const url = URL.createObjectURL(blob);
+  link.setAttribute("href", url);
+  link.setAttribute("download", "audits_export.csv");
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
 
-      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-      const link = document.createElement("a");
-      const url = URL.createObjectURL(blob);
-      link.setAttribute("href", url);
-      link.setAttribute("download", "audits_export.csv");
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    }
-
-    // Initial render when page loads
-    renderEmails(emails);
-  </script>
+// Initial render when page loads
+renderEmails(emails);
+</script>
+</body>
 </html>

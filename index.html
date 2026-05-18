@@ -173,11 +173,13 @@
     }
 
     function getColorCode(value) {
-      if (value.toLowerCase() === "no op") return "Green";
-      if (value.toLowerCase() === "coaching op") return "Yellow";
-      if (value === "" || value === "Not selected") return "";
-      return "Red";
-    }
+  if (!value) return ""; // handles undefined or null
+  const val = value.toLowerCase();
+  if (val === "no op") return "Green";
+  if (val === "coaching op") return "Yellow";
+  if (val === "" || val === "not selected") return "";
+  return "Red";
+}
 
      function exportCSV() {
   let csvContent = "Audit Number,Date,Reliable,Reliable Color,Personable,Personable Color,Fast,Fast Color,Safe,Safe Color,Text\n";

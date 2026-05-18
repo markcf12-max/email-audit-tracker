@@ -22,6 +22,7 @@
     .btn:hover { background-color: #005a9e; transform: translateY(-2px); }
     .btn-danger { background-color: #d9534f; }
     .btn-danger:hover { background-color: #b52b27; }
+    select { width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #ccc; margin-top: 5px; }
   </style>
 </head>
 <body>
@@ -41,6 +42,61 @@
   <div id="emailList"></div>
   
   <h3>Total Audits: <span id="auditCount">0</span></h3>
+
+  <!-- New Evaluation Section -->
+  <h2>Solution Parameters</h2>
+
+  <div class="email-box">
+    <label><strong>Reliable</strong></label>
+    <select>
+      <option value="">-- Select --</option>
+      <option>Did not understand the intent</option>
+      <option>Did not use the tool properly</option>
+      <option>Incorrect information/solution provided</option>
+      <option>Incorrect ticket creation</option>
+      <option>Incorrect workgroup/staging</option>
+      <option>Unnecessary endorsement</option>
+      <option>No OP</option>
+      <option>Coaching op</option>
+    </select>
+  </div>
+
+  <div class="email-box">
+    <label><strong>Personable</strong></label>
+    <select>
+      <option value="">-- Select --</option>
+      <option>Customer validation and empathy gap</option>
+      <option>Did not adjust the tone/pace to match the customer</option>
+      <option>Did not adjust to the customer language</option>
+      <option>Negative words, phrasing and limitations</option>
+      <option>Unfriendly/discourteous/sarcastic</option>
+      <option>Sounded transactional or robotic</option>
+      <option>Coaching op</option>
+    </select>
+  </div>
+
+  <div class="email-box">
+    <label><strong>Fast</strong></label>
+    <select>
+      <option value="">-- Select --</option>
+      <option>Delayed ticket creation/staging</option>
+      <option>No ticket created</option>
+      <option>No OP</option>
+      <option>Coaching op</option>
+    </select>
+  </div>
+
+  <div class="email-box">
+    <label><strong>Safe and Secure</strong></label>
+    <select>
+      <option value="">-- Select --</option>
+      <option>Sounded Confident</option>
+      <option>Vague Explanation</option>
+      <option>Did not involve the customer in an engaging experience</option>
+      <option>No OP</option>
+      <option>Coaching op</option>
+    </select>
+  </div>
 
   <script>
     let emails = JSON.parse(localStorage.getItem('emails') || '[]');

@@ -210,5 +210,16 @@ function exportCSV() {
 
 function toggleMenu() {
   const menu = document.getElementById("sideMenu");
-  menu.classList.toggle("open");
+  const overlay = document.getElementById("overlay");
+
+  const isOpen = menu.classList.contains("open");
+
+  if (isOpen) {
+    menu.classList.remove("open");
+    overlay.classList.remove("show");
+  } else {
+    menu.classList.add("open");
+    overlay.classList.add("show");
+  }
 }
+

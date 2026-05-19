@@ -25,13 +25,18 @@
   <div id="auditCounter">Total Audits: <span id="auditCount">0</span></div>
   <div class="burger-menu" onclick="toggleMenu()">☰</div>
 </div>
-    <!-- Sidebar menu -->
-    <div id="sideMenu" class="side-menu">
-      <a href="#" onclick="renderRecentAudits()">Recent Audits</a>
-      <a href="#" onclick="renderAllAudits()">All Audits</a>
-      <a href="#" onclick="exportCSV()">Export CSV</a>
-      <a href="#" onclick="logout()">Logout</a>
-    </div>
+
+<!-- Overlay background -->
+<div id="overlay" class="overlay" onclick="toggleMenu()"></div>
+
+<!-- Sidebar menu -->
+<div id="sideMenu" class="side-menu">
+  <a href="#" onclick="renderRecentAudits()">Recent Audits</a>
+  <a href="#" onclick="renderAllAudits()">All Audits</a>
+  <a href="#" onclick="exportCSV()">Export CSV</a>
+  <a href="#" onclick="logout()">Logout</a>
+</div>
+
 
     <!-- Audit entry form -->
     <textarea id="emailInput" placeholder="Paste or type your audited email here..."></textarea><br>

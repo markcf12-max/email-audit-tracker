@@ -90,10 +90,10 @@
     <button class="btn" onclick="saveEmail()">Save Audit</button>
 
 <h2>Search Audits</h2>
-<div class="search-container">
+<form class="search-container" onsubmit="searchEmails(); return false;">
   <input type="text" id="searchInput" placeholder="Search audits...">
-  <button class="search-btn" onclick="searchEmails()">🔍</button>
-</div>
+  <button type="submit" class="search-btn">🔍</button>
+</form>
 <button class="btn" onclick="exportCSV()">Export CSV</button>
 <button class="btn" onclick="renderAllAudits()">Show All Audits</button>
 <button id="backRecentBtn" class="btn" onclick="renderRecentAudits()" disabled>Back to Recent (3)</button>

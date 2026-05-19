@@ -42,6 +42,7 @@ window.onload = function() {
   renderRecentAudits(); // default view is 3 audits
 };
 
+
 // Audit tracker functions
 function saveEmail() {
   const text = document.getElementById('emailInput').value.trim();
@@ -78,7 +79,6 @@ function saveEmail() {
   renderEmails(emails);
 }
 
-// Render only last 3 audits by default
 // Render only last 3 audits
 function renderRecentAudits() {
   const list = document.getElementById('emailList');
@@ -109,6 +109,9 @@ function renderRecentAudits() {
   });
 
   document.getElementById('auditCount').innerText = emails.length;
+
+  // Disable Back button in compact view
+  document.getElementById('backRecentBtn').disabled = true;
 }
 
 // Show all audits
@@ -142,15 +145,10 @@ function renderAllAudits() {
 
   document.getElementById('auditCount').innerText = emails.length;
 
-  // Add "Back to Recent (3)" button
-  const backBtn = document.createElement("button");
-  backBtn.className = "btn";
-  backBtn.textContent = "Back to Recent (3)";
-  backBtn.onclick = function() {
-    renderRecentAudits();
-  };
-  list.appendChild(backBtn);
+  // Enable Back button in full view
+  document.getElementById('backRecentBtn').disabled = false;
 }
+
 
 
 

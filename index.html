@@ -38,7 +38,65 @@
     <textarea id="emailInput" placeholder="Paste or type your audited email here..."></textarea><br>
 
     <!-- Parameter dropdowns -->
-    <!-- (your dropdowns remain unchanged here) -->
+    <label>Reliable:</label>
+    <select id="paramReliable" required>
+      <option value="">Select Issue</option>
+      <option>No Opportunity</option>
+      <option>Irrelevant Solution</option>
+      <option>Incomplete Solution</option>
+      <option>Untimely Solution - ZTP</option>
+      <option>Unclear Solution</option>
+    </select>
+
+    <label>Personable:</label>
+    <select id="paramPersonable" required>
+      <option value="">Select Issue</option>
+      <option>No Opportunity</option>
+      <option>Poor Listening Skills</option>
+      <option>Customer validation and Empathy Gap</option>
+      <option>Did not adjust tone/pace</option>
+      <option>Did not adjust to customer’s language</option>
+      <option>Negative Words/Phrasing</option>
+      <option>Unfriendly/discourteous/sarcastic</option>
+      <option>Sounded transactional or robotic</option>
+    </select>
+
+    <label>Fast:</label>
+    <select id="paramFast" required>
+      <option value="">Select Issue</option>
+      <option>No Opportunity</option>
+      <option>Untimely Response - Negative CX</option>
+      <option>Untimely Response - within threshold</option>
+      <option>Untimely Response - Knowledge Gap</option>
+      <option>Untimely Response - Complex Issues</option>
+      <option>Untimely Response - Tools Issue</option>
+      <option>Untimely Response - Behavior Concerns</option>
+    </select>
+
+    <label>Safe and Secure:</label>
+    <select id="paramSafe" required>
+      <option value="">Select Issue</option>
+      <option>No Opportunity</option>
+      <option>No Authentication</option>
+      <option>Unnecessary authentication</option>
+      <option>Incorrect/Untimely authentication</option>
+      <option>Incomplete authentication</option>
+      <option>Unable to perform account validation</option>
+      <option>Divulging Customer Information</option>
+      <option>Divulging internal company processes</option>
+      <option>Did not deliver Outbound Call Monitoring Spiel</option>
+      <option>Did not follow prescribed spiel</option>
+      <option>Did not offer CSAT</option>
+      <option>Did not document interaction</option>
+      <option>Incorrect documentation</option>
+      <option>Incomplete documentation</option>
+      <option>No Tagging / Incorrect / Incomplete tagging</option>
+      <option>Incorrect punctuation</option>
+      <option>Incorrect spelling</option>
+      <option>Incorrect capitalization</option>
+      <option>Multiple grammar errors</option>
+      <option>Did not follow prescribed language</option>
+    </select>
 
     <button class="btn" onclick="saveEmail()">Save Audit</button>
 

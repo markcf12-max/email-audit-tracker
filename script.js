@@ -87,10 +87,16 @@ function saveEmail() {
 }
 
 
+let showAll = false; // global toggle state
+
 function renderEmails(listToShow) {
   const list = document.getElementById('emailList');
   list.innerHTML = '';
-  listToShow.forEach((entry) => {
+
+  // Decide whether to show all or just 3 recent
+  const displayList = showAll ? listToShow.slice().reverse() : listToShow.slice(-3).reverse();
+
+  displayList.forEach((entry) => {
     const summary = entry.text.length > 50 ? entry.text.substring(0, 50) + "..." : entry.text;
     list.innerHTML += `
       <div class="email-box">
@@ -105,8 +111,22 @@ function renderEmails(listToShow) {
       </div>
     `;
   });
+
   document.getElementById('auditCount').innerText = emails.length;
+
+  // Add toggle button at the bottom
+  if (emails.length > 3) {
+    const toggleBtn = document.createElement("button");
+    toggleBtn.className = "btn";
+    toggleBtn.textContent = showAll ? "Show Recent (3)" : "Show All Audits";
+    toggleBtn.onclick = function() {
+      showAll = !showAll;
+      renderEmails(emails);
+    };
+    list.appendChild(toggleBtn);
+  }
 }
+
 
 function toggleEmail(id) {
   const box = document.getElementById('email' + id);

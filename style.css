@@ -132,3 +132,47 @@ select {
   width: 100%;
   margin-top: 15px;
 }
+
+/* Modernized search bar */
+.search-container {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 15px;
+}
+
+#searchInput {
+  flex: 1;
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: border-color 0.3s;
+}
+
+#searchInput:focus {
+  border-color: #0078d7;
+  outline: none;
+}
+
+.search-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #0078d7;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 16px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.search-btn:hover {
+  background: #005a9e;
+  transform: translateY(-2px);
+}
+
+.search-icon {
+  font-size: 16px;
+}

@@ -11,20 +11,15 @@ function login() {
     document.getElementById("loginSection").style.display = "none";
     document.getElementById("trackerSection").style.display = "block";
   } else {
-    // Keep tracker hidden
     document.getElementById("trackerSection").style.display = "none";
     document.getElementById("loginSection").style.display = "block";
-
-    // Clear password field
     document.getElementById("password").value = "";
 
-    // Show error modal
     const modal = document.getElementById("loginErrorModal");
     modal.style.display = "block";
 
-    // Trigger shake animation
-    modal.classList.remove("shake"); // reset if already applied
-    void modal.offsetWidth;          // force reflow
+    modal.classList.remove("shake");
+    void modal.offsetWidth;
     modal.classList.add("shake");
   }
 }
@@ -32,7 +27,6 @@ function login() {
 function closeLoginError() {
   document.getElementById("loginErrorModal").style.display = "none";
 }
-
 
 function logout() {
   localStorage.removeItem("loggedIn");
@@ -56,7 +50,6 @@ function saveEmail() {
   const fast = document.getElementById('paramFast').value;
   const safe = document.getElementById('paramSafe').value;
 
-  // Validation: must have email text and a selection for each parameter
   if (!text || !reliable || !personable || !fast || !safe) {
     alert("Please enter the email and select an option for each parameter (including 'No Opportunity').");
     return;
@@ -76,7 +69,6 @@ function saveEmail() {
   emails.push(entry);
   localStorage.setItem('emails', JSON.stringify(emails));
 
-  // Reset form
   document.getElementById('emailInput').value = '';
   document.getElementById('paramReliable').value = '';
   document.getElementById('paramPersonable').value = '';
@@ -86,29 +78,18 @@ function saveEmail() {
   renderEmails(emails);
 }
 
-
-let showAll = false; // global toggle state
-
+// Render only last 3 audits by default
 function renderEmails(listToShow) {
   const list = document.getElementById('emailList');
   list.innerHTML = '';
 
-  // If no audits, show message
   if (listToShow.length === 0) {
     list.innerHTML = `<div class="email-box"><p>No audits saved yet.</p></div>`;
     document.getElementById('auditCount').innerText = emails.length;
     return;
   }
 
-  // Apply toggle logic: show all or just 3 recent
-  let displayList;
-  if (showAll) {
-    // Show all audits, newest first
-    displayList = [...listToShow].reverse();
-  } else {
-    // Show only last 3 audits, newest first
-    displayList = listToShow.slice(-3).reverse();
-  }
+  const displayList = listToShow.slice(-3).reverse();
 
   displayList.forEach((entry) => {
     const summary = entry.text.length > 50 ? entry.text.substring(0, 50) + "..." : entry.text;
@@ -127,22 +108,39 @@ function renderEmails(listToShow) {
   });
 
   document.getElementById('auditCount').innerText = emails.length;
-
-  // Add toggle button if more than 3 audits exist
-  if (listToShow.length > 3) {
-    const toggleBtn = document.createElement("button");
-    toggleBtn.className = "btn";
-    toggleBtn.textContent = showAll ? "Show Recent (3)" : "Show All Audits";
-    toggleBtn.onclick = function() {
-      showAll = !showAll;
-      renderEmails(emails); // always re-render from full array
-    };
-    list.appendChild(toggleBtn);
-  }
 }
 
+// Show all audits (triggered by button beside Export CSV)
+function renderAllAudits() {
+  const list = document.getElementById('emailList');
+  list.innerHTML = '';
 
+  if (emails.length === 0) {
+    list.innerHTML = `<div class="email-box"><p>No audits saved yet.</p></div>`;
+    document.getElementById('auditCount').innerText = emails.length;
+    return;
+  }
 
+  const displayList = [...emails].reverse();
+
+  displayList.forEach((entry) => {
+    const summary = entry.text.length > 50 ? entry.text.substring(0, 50) + "..." : entry.text;
+    list.innerHTML += `
+      <div class="email-box">
+        <div class="summary" onclick="toggleEmail(${entry.id})">${summary}</div>
+        <div class="date">Saved on: ${entry.date}</div>
+        <div><strong>Reliable:</strong> ${entry.reliable}</div>
+        <div><strong>Personable:</strong> ${entry.personable}</div>
+        <div><strong>Fast:</strong> ${entry.fast}</div>
+        <div><strong>Safe & Secure:</strong> ${entry.safe}</div>
+        <textarea id="email${entry.id}" style="display:none;" onchange="editEmail(${entry.id}, this.value)">${entry.text}</textarea>
+        <button class="btn btn-danger" onclick="openModal(${entry.id})">Delete</button>
+      </div>
+    `;
+  });
+
+  document.getElementById('auditCount').innerText = emails.length;
+}
 
 function toggleEmail(id) {
   const box = document.getElementById('email' + id);
@@ -182,7 +180,6 @@ function searchEmails() {
   const keyword = document.getElementById('searchInput').value.trim().toLowerCase();
 
   if (!keyword) {
-    // If search box is empty, show all
     renderEmails(emails);
     return;
   }
@@ -200,7 +197,6 @@ function searchEmails() {
   if (filtered.length > 0) {
     renderEmails(filtered);
   } else {
-    // Show a friendly message if no results
     const list = document.getElementById('emailList');
     list.innerHTML = `<div class="email-box"><p>No audits found for "${keyword}".</p></div>`;
     document.getElementById('auditCount').innerText = emails.length;

@@ -42,7 +42,6 @@ window.onload = function() {
   renderRecentAudits(); // default view is 3 audits
 };
 
-// Save new audit
 function saveEmail() {
   const text = document.getElementById('emailInput').value.trim();
   const reliable = document.getElementById('paramReliable').value;
@@ -69,14 +68,17 @@ function saveEmail() {
   emails.push(entry);
   localStorage.setItem('emails', JSON.stringify(emails));
 
+  // Reset form
   document.getElementById('emailInput').value = '';
   document.getElementById('paramReliable').value = '';
   document.getElementById('paramPersonable').value = '';
   document.getElementById('paramFast').value = '';
   document.getElementById('paramSafe').value = '';
 
-  renderRecentAudits(); // after saving, show recent 3
+  // ✅ Show the updated compact view immediately
+  renderRecentAudits();
 }
+
 
 // Compact view (last 3 audits)
 function renderRecentAudits() {
@@ -138,27 +140,19 @@ function editEmail(id, newText) {
   if (entry) {
     entry.text = newText;
     localStorage.setItem('emails', JSON.stringify(emails));
-    renderRecentAudits(); // keep compact view after edit
+    renderRecentAudits(); // ✅ update compact view
   }
 }
 
-// Modal functions
-function openModal(id) {
-  deleteId = id;
-  document.getElementById('deleteModal').style.display = 'block';
-}
-function closeModal() {
-  deleteId = null;
-  document.getElementById('deleteModal').style.display = 'none';
-}
 function confirmDelete() {
   if (deleteId !== null) {
     emails = emails.filter(e => e.id !== deleteId);
     localStorage.setItem('emails', JSON.stringify(emails));
-    renderRecentAudits(); // back to compact view after delete
+    renderRecentAudits(); // ✅ update compact view
   }
   closeModal();
 }
+
 
 // Search audits
 function searchEmails() {

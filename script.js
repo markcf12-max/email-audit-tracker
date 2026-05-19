@@ -207,3 +207,8 @@ function exportCSV() {
   link.click();
   document.body.removeChild(link);
 }
+
+function toggleMenu() {
+  const menu = document.getElementById("sideMenu");
+  menu.classList.toggle("open");
+}

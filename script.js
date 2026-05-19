@@ -39,7 +39,7 @@ window.onload = function() {
     document.getElementById("loginSection").style.display = "none";
     document.getElementById("trackerSection").style.display = "block";
   }
-  renderEmails(emails);
+  renderRecentAudits(); // default view is 3 audits
 };
 
 // Audit tracker functions
@@ -79,17 +79,18 @@ function saveEmail() {
 }
 
 // Render only last 3 audits by default
-function renderEmails(listToShow) {
+// Render only last 3 audits
+function renderRecentAudits() {
   const list = document.getElementById('emailList');
   list.innerHTML = '';
 
-  if (listToShow.length === 0) {
+  if (emails.length === 0) {
     list.innerHTML = `<div class="email-box"><p>No audits saved yet.</p></div>`;
     document.getElementById('auditCount').innerText = emails.length;
     return;
   }
 
-  const displayList = listToShow.slice(-3).reverse();
+  const displayList = emails.slice(-3).reverse();
 
   displayList.forEach((entry) => {
     const summary = entry.text.length > 50 ? entry.text.substring(0, 50) + "..." : entry.text;
@@ -110,7 +111,7 @@ function renderEmails(listToShow) {
   document.getElementById('auditCount').innerText = emails.length;
 }
 
-// Show all audits (triggered by button beside Export CSV)
+// Show all audits
 function renderAllAudits() {
   const list = document.getElementById('emailList');
   list.innerHTML = '';
@@ -146,10 +147,11 @@ function renderAllAudits() {
   backBtn.className = "btn";
   backBtn.textContent = "Back to Recent (3)";
   backBtn.onclick = function() {
-    renderEmails(emails);
+    renderRecentAudits();
   };
   list.appendChild(backBtn);
 }
+
 
 
 function toggleEmail(id) {

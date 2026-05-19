@@ -42,6 +42,7 @@ window.onload = function() {
   renderRecentAudits(); // default view is 3 audits
 };
 
+// Save new audit
 function saveEmail() {
   const text = document.getElementById('emailInput').value.trim();
   const reliable = document.getElementById('paramReliable').value;
@@ -75,10 +76,8 @@ function saveEmail() {
   document.getElementById('paramFast').value = '';
   document.getElementById('paramSafe').value = '';
 
-  // ✅ Show the updated compact view immediately
-  renderRecentAudits();
+  renderRecentAudits(); // ✅ show updated compact view
 }
-
 
 // Compact view (last 3 audits)
 function renderRecentAudits() {
@@ -144,6 +143,15 @@ function editEmail(id, newText) {
   }
 }
 
+// Modal functions
+function openModal(id) {
+  deleteId = id;
+  document.getElementById('deleteModal').style.display = 'block';
+}
+function closeModal() {
+  deleteId = null;
+  document.getElementById('deleteModal').style.display = 'none';
+}
 function confirmDelete() {
   if (deleteId !== null) {
     emails = emails.filter(e => e.id !== deleteId);
@@ -152,7 +160,6 @@ function confirmDelete() {
   }
   closeModal();
 }
-
 
 // Search audits
 function searchEmails() {
@@ -179,7 +186,6 @@ function searchEmails() {
     list.innerHTML = `<div class="email-box"><p>No audits found for "${keyword}".</p></div>`;
   }
 
-  // Always show total audits count
   document.getElementById('auditCount').innerText = emails.length;
   document.getElementById('backRecentBtn').disabled = false;
 }

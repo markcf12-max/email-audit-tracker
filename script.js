@@ -42,9 +42,7 @@ window.onload = function() {
   renderRecentAudits(); // default view is 3 audits
 };
 
-
-
-// Audit tracker functions
+// Save new audit
 function saveEmail() {
   const text = document.getElementById('emailInput').value.trim();
   const reliable = document.getElementById('paramReliable').value;
@@ -77,42 +75,22 @@ function saveEmail() {
   document.getElementById('paramFast').value = '';
   document.getElementById('paramSafe').value = '';
 
-  renderEmails(emails);
+  renderRecentAudits(); // after saving, show recent 3
 }
 
-// Default compact view (last 3 audits)
+// Compact view (last 3 audits)
 function renderRecentAudits() {
   const list = document.getElementById('emailList');
   list.innerHTML = '';
 
   if (emails.length === 0) {
     list.innerHTML = `<div class="email-box"><p>No audits saved yet.</p></div>`;
-    document.getElementById('auditCount').innerText = emails.length;
-    return;
+  } else {
+    const displayList = emails.slice(-3).reverse();
+    displayList.forEach((entry) => renderEntry(list, entry));
   }
 
-  const displayList = emails.slice(-3).reverse();
-
-  displayList.forEach((entry) => {
-    const summary = entry.text.length > 50 ? entry.text.substring(0, 50) + "..." : entry.text;
-    list.innerHTML += `
-      <div class="email-box">
-        <div class="summary" onclick="toggleEmail(${entry.id})">${summary}</div>
-        <div class="date">Saved on: ${entry.date}</div>
-        <div><strong>Reliable:</strong> ${entry.reliable}</div>
-        <div><strong>Personable:</strong> ${entry.personable}</div>
-        <div><strong>Fast:</strong> ${entry.fast}</div>
-        <div><strong>Safe & Secure:</strong> ${entry.safe}</div>
-        <textarea id="email${entry.id}" style="display:none;" onchange="editEmail(${entry.id}, this.value)">${entry.text}</textarea>
-        <button class="btn btn-danger" onclick="openModal(${entry.id})">Delete</button>
-      </div>
-    `;
-  });
-
-  // Always update total audits count
   document.getElementById('auditCount').innerText = emails.length;
-
-  // Disable Back button in compact view
   document.getElementById('backRecentBtn').disabled = true;
 }
 
@@ -123,37 +101,30 @@ function renderAllAudits() {
 
   if (emails.length === 0) {
     list.innerHTML = `<div class="email-box"><p>No audits saved yet.</p></div>`;
-    document.getElementById('auditCount').innerText = emails.length;
-    return;
+  } else {
+    [...emails].reverse().forEach((entry) => renderEntry(list, entry));
   }
 
-  const displayList = [...emails].reverse();
-
-  displayList.forEach((entry) => {
-    const summary = entry.text.length > 50 ? entry.text.substring(0, 50) + "..." : entry.text;
-    list.innerHTML += `
-      <div class="email-box">
-        <div class="summary" onclick="toggleEmail(${entry.id})">${summary}</div>
-        <div class="date">Saved on: ${entry.date}</div>
-        <div><strong>Reliable:</strong> ${entry.reliable}</div>
-        <div><strong>Personable:</strong> ${entry.personable}</div>
-        <div><strong>Fast:</strong> ${entry.fast}</div>
-        <div><strong>Safe & Secure:</strong> ${entry.safe}</div>
-        <textarea id="email${entry.id}" style="display:none;" onchange="editEmail(${entry.id}, this.value)">${entry.text}</textarea>
-        <button class="btn btn-danger" onclick="openModal(${entry.id})">Delete</button>
-      </div>
-    `;
-  });
-
   document.getElementById('auditCount').innerText = emails.length;
-
-  // Enable Back button in full view
   document.getElementById('backRecentBtn').disabled = false;
 }
 
-
-
-
+// Helper to render one audit entry
+function renderEntry(list, entry) {
+  const summary = entry.text.length > 50 ? entry.text.substring(0, 50) + "..." : entry.text;
+  list.innerHTML += `
+    <div class="email-box">
+      <div class="summary" onclick="toggleEmail(${entry.id})">${summary}</div>
+      <div class="date">Saved on: ${entry.date}</div>
+      <div><strong>Reliable:</strong> ${entry.reliable}</div>
+      <div><strong>Personable:</strong> ${entry.personable}</div>
+      <div><strong>Fast:</strong> ${entry.fast}</div>
+      <div><strong>Safe & Secure:</strong> ${entry.safe}</div>
+      <textarea id="email${entry.id}" style="display:none;" onchange="editEmail(${entry.id}, this.value)">${entry.text}</textarea>
+      <button class="btn btn-danger" onclick="openModal(${entry.id})">Delete</button>
+    </div>
+  `;
+}
 
 function toggleEmail(id) {
   const box = document.getElementById('email' + id);
@@ -167,7 +138,7 @@ function editEmail(id, newText) {
   if (entry) {
     entry.text = newText;
     localStorage.setItem('emails', JSON.stringify(emails));
-    renderEmails(emails);
+    renderRecentAudits(); // keep compact view after edit
   }
 }
 
@@ -184,57 +155,42 @@ function confirmDelete() {
   if (deleteId !== null) {
     emails = emails.filter(e => e.id !== deleteId);
     localStorage.setItem('emails', JSON.stringify(emails));
-    renderEmails(emails);
+    renderRecentAudits(); // back to compact view after delete
   }
   closeModal();
 }
 
+// Search audits
 function searchEmails() {
   const keyword = document.getElementById('searchInput').value.trim().toLowerCase();
-
-  if (!keyword) {
-    renderRecentAudits(); // default back to 3 recent
-    return;
-  }
-
-  const filtered = emails.filter(entry => {
-    return (
-      (entry.text && entry.text.toLowerCase().includes(keyword)) ||
-      (entry.reliable && entry.reliable.toLowerCase().includes(keyword)) ||
-      (entry.personable && entry.personable.toLowerCase().includes(keyword)) ||
-      (entry.fast && entry.fast.toLowerCase().includes(keyword)) ||
-      (entry.safe && entry.safe.toLowerCase().includes(keyword))
-    );
-  });
-
   const list = document.getElementById('emailList');
   list.innerHTML = '';
 
+  if (!keyword) {
+    renderRecentAudits();
+    return;
+  }
+
+  const filtered = emails.filter(entry =>
+    (entry.text && entry.text.toLowerCase().includes(keyword)) ||
+    (entry.reliable && entry.reliable.toLowerCase().includes(keyword)) ||
+    (entry.personable && entry.personable.toLowerCase().includes(keyword)) ||
+    (entry.fast && entry.fast.toLowerCase().includes(keyword)) ||
+    (entry.safe && entry.safe.toLowerCase().includes(keyword))
+  );
+
   if (filtered.length > 0) {
-    filtered.reverse().forEach((entry) => {
-      const summary = entry.text.length > 50 ? entry.text.substring(0, 50) + "..." : entry.text;
-      list.innerHTML += `
-        <div class="email-box">
-          <div class="summary" onclick="toggleEmail(${entry.id})">${summary}</div>
-          <div class="date">Saved on: ${entry.date}</div>
-          <div><strong>Reliable:</strong> ${entry.reliable}</div>
-          <div><strong>Personable:</strong> ${entry.personable}</div>
-          <div><strong>Fast:</strong> ${entry.fast}</div>
-          <div><strong>Safe & Secure:</strong> ${entry.safe}</div>
-          <textarea id="email${entry.id}" style="display:none;" onchange="editEmail(${entry.id}, this.value)">${entry.text}</textarea>
-          <button class="btn btn-danger" onclick="openModal(${entry.id})">Delete</button>
-        </div>
-      `;
-    });
+    filtered.reverse().forEach((entry) => renderEntry(list, entry));
   } else {
     list.innerHTML = `<div class="email-box"><p>No audits found for "${keyword}".</p></div>`;
   }
 
   // Always show total audits count
   document.getElementById('auditCount').innerText = emails.length;
+  document.getElementById('backRecentBtn').disabled = false;
 }
 
-
+// Export CSV
 function exportCSV() {
   let csvContent = "Audit Number,Date,Reliable,Personable,Fast,Safe,Text\n";
   emails.forEach((entry, i) => {

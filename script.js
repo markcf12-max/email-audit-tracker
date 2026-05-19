@@ -80,7 +80,7 @@ function saveEmail() {
   renderEmails(emails);
 }
 
-// Render only last 3 audits
+// Default compact view (last 3 audits)
 function renderRecentAudits() {
   const list = document.getElementById('emailList');
   list.innerHTML = '';
@@ -109,13 +109,14 @@ function renderRecentAudits() {
     `;
   });
 
+  // Always update total audits count
   document.getElementById('auditCount').innerText = emails.length;
 
   // Disable Back button in compact view
   document.getElementById('backRecentBtn').disabled = true;
 }
 
-// Show all audits
+// Full view (all audits)
 function renderAllAudits() {
   const list = document.getElementById('emailList');
   list.innerHTML = '';
@@ -149,6 +150,7 @@ function renderAllAudits() {
   // Enable Back button in full view
   document.getElementById('backRecentBtn').disabled = false;
 }
+
 
 
 
@@ -191,7 +193,7 @@ function searchEmails() {
   const keyword = document.getElementById('searchInput').value.trim().toLowerCase();
 
   if (!keyword) {
-    renderEmails(emails);
+    renderRecentAudits(); // default back to 3 recent
     return;
   }
 
@@ -205,14 +207,33 @@ function searchEmails() {
     );
   });
 
+  const list = document.getElementById('emailList');
+  list.innerHTML = '';
+
   if (filtered.length > 0) {
-    renderEmails(filtered);
+    filtered.reverse().forEach((entry) => {
+      const summary = entry.text.length > 50 ? entry.text.substring(0, 50) + "..." : entry.text;
+      list.innerHTML += `
+        <div class="email-box">
+          <div class="summary" onclick="toggleEmail(${entry.id})">${summary}</div>
+          <div class="date">Saved on: ${entry.date}</div>
+          <div><strong>Reliable:</strong> ${entry.reliable}</div>
+          <div><strong>Personable:</strong> ${entry.personable}</div>
+          <div><strong>Fast:</strong> ${entry.fast}</div>
+          <div><strong>Safe & Secure:</strong> ${entry.safe}</div>
+          <textarea id="email${entry.id}" style="display:none;" onchange="editEmail(${entry.id}, this.value)">${entry.text}</textarea>
+          <button class="btn btn-danger" onclick="openModal(${entry.id})">Delete</button>
+        </div>
+      `;
+    });
   } else {
-    const list = document.getElementById('emailList');
     list.innerHTML = `<div class="email-box"><p>No audits found for "${keyword}".</p></div>`;
-    document.getElementById('auditCount').innerText = emails.length;
   }
+
+  // Always show total audits count
+  document.getElementById('auditCount').innerText = emails.length;
 }
+
 
 function exportCSV() {
   let csvContent = "Audit Number,Date,Reliable,Personable,Fast,Safe,Text\n";

@@ -43,6 +43,7 @@ window.onload = function() {
 };
 
 
+
 // Audit tracker functions
 function saveEmail() {
   const text = document.getElementById('emailInput').value.trim();

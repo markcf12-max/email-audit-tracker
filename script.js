@@ -76,7 +76,7 @@ function saveEmail() {
   document.getElementById('paramFast').value = '';
   document.getElementById('paramSafe').value = '';
 
-  renderRecentAudits(); // ✅ show updated compact view
+  renderRecentAudits(); // ✅ refresh compact view immediately
 }
 
 // Compact view (last 3 audits)

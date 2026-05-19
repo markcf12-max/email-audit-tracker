@@ -143,15 +143,32 @@ function confirmDelete() {
 }
 
 function searchEmails() {
-  const keyword = document.getElementById('searchInput').value.toLowerCase();
-  const filtered = emails.filter(entry => 
-    entry.text.toLowerCase().includes(keyword) ||
-    entry.reliable.toLowerCase().includes(keyword) ||
-    entry.personable.toLowerCase().includes(keyword) ||
-    entry.fast.toLowerCase().includes(keyword) ||
-    entry.safe.toLowerCase().includes(keyword)
-  );
-  renderEmails(filtered);
+  const keyword = document.getElementById('searchInput').value.trim().toLowerCase();
+
+  if (!keyword) {
+    // If search box is empty, show all
+    renderEmails(emails);
+    return;
+  }
+
+  const filtered = emails.filter(entry => {
+    return (
+      (entry.text && entry.text.toLowerCase().includes(keyword)) ||
+      (entry.reliable && entry.reliable.toLowerCase().includes(keyword)) ||
+      (entry.personable && entry.personable.toLowerCase().includes(keyword)) ||
+      (entry.fast && entry.fast.toLowerCase().includes(keyword)) ||
+      (entry.safe && entry.safe.toLowerCase().includes(keyword))
+    );
+  });
+
+  if (filtered.length > 0) {
+    renderEmails(filtered);
+  } else {
+    // Show a friendly message if no results
+    const list = document.getElementById('emailList');
+    list.innerHTML = `<div class="email-box"><p>No audits found for "${keyword}".</p></div>`;
+    document.getElementById('auditCount').innerText = emails.length;
+  }
 }
 
 function exportCSV() {

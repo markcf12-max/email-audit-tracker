@@ -100,10 +100,15 @@ function renderEmails(listToShow) {
     return;
   }
 
-  // Decide whether to show all or just 3 recent
-  const displayList = showAll 
-    ? listToShow.slice().reverse()        // all audits, newest first
-    : listToShow.slice(-3).reverse();     // last 3 audits, newest first
+  // Apply toggle logic: show all or just 3 recent
+  let displayList;
+  if (showAll) {
+    // Show all audits, newest first
+    displayList = [...listToShow].reverse();
+  } else {
+    // Show only last 3 audits, newest first
+    displayList = listToShow.slice(-3).reverse();
+  }
 
   displayList.forEach((entry) => {
     const summary = entry.text.length > 50 ? entry.text.substring(0, 50) + "..." : entry.text;
@@ -124,17 +129,18 @@ function renderEmails(listToShow) {
   document.getElementById('auditCount').innerText = emails.length;
 
   // Add toggle button if more than 3 audits exist
-  if (emails.length > 3) {
+  if (listToShow.length > 3) {
     const toggleBtn = document.createElement("button");
     toggleBtn.className = "btn";
     toggleBtn.textContent = showAll ? "Show Recent (3)" : "Show All Audits";
     toggleBtn.onclick = function() {
       showAll = !showAll;
-      renderEmails(emails);
+      renderEmails(emails); // always re-render from full array
     };
     list.appendChild(toggleBtn);
   }
 }
+
 
 
 

@@ -138,8 +138,8 @@ select {
   display: flex;
   gap: 8px;
   margin-bottom: 20px;
-  position: sticky;   /* sticks when scrolling */
-  top: 60px;          /* adjust depending on header height */
+  position: sticky;
+  top: 60px;
   background: #f9f9f9;
   padding: 10px;
   z-index: 999;
@@ -171,6 +171,8 @@ select {
   border-radius: 50%; /* circular */
   width: 40px;        /* fixed size */
   height: 40px;
+  line-height: 1;     /* prevents extra vertical space */
+  padding: 0;         /* remove default padding */
   cursor: pointer;
   transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
   box-shadow: 0 2px 6px rgba(0,0,0,0.15);

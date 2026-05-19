@@ -138,11 +138,11 @@ select {
   display: flex;
   gap: 8px;
   margin-bottom: 20px;
-  position: sticky;   /* makes it stick */
+  position: sticky;   /* sticks when scrolling */
   top: 60px;          /* adjust depending on header height */
-  background: #f9f9f9; /* match page background */
+  background: #f9f9f9;
   padding: 10px;
-  z-index: 999;       /* ensures it stays above other elements */
+  z-index: 999;
   border-bottom: 1px solid #ddd;
 }
 
@@ -169,7 +169,7 @@ select {
   color: white;
   border: none;
   border-radius: 50%; /* circular */
-  width: 40px;
+  width: 40px;        /* fixed size */
   height: 40px;
   cursor: pointer;
   transition: background 0.3s, transform 0.2s, box-shadow 0.3s;

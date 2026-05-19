@@ -37,27 +37,36 @@ function saveEmail() {
   const fast = document.getElementById('paramFast').value;
   const safe = document.getElementById('paramSafe').value;
 
-  if (text) {
-    const now = new Date();
-    const entry = { 
-      id: Date.now(),
-      text,
-      reliable: reliable || "Not selected",
-      personable: personable || "Not selected",
-      fast: fast || "Not selected",
-      safe: safe || "Not selected",
-      date: now.toLocaleString() 
-    };
-    emails.push(entry);
-    localStorage.setItem('emails', JSON.stringify(emails));
-    document.getElementById('emailInput').value = '';
-    document.getElementById('paramReliable').value = '';
-    document.getElementById('paramPersonable').value = '';
-    document.getElementById('paramFast').value = '';
-    document.getElementById('paramSafe').value = '';
-    renderEmails(emails);
+  // Validation: must have email text and a selection for each parameter
+  if (!text || !reliable || !personable || !fast || !safe) {
+    alert("Please enter the email and select an option for each parameter (including 'No Opportunity').");
+    return;
   }
+
+  const now = new Date();
+  const entry = { 
+    id: Date.now(),
+    text,
+    reliable,
+    personable,
+    fast,
+    safe,
+    date: now.toLocaleString() 
+  };
+
+  emails.push(entry);
+  localStorage.setItem('emails', JSON.stringify(emails));
+
+  // Reset form
+  document.getElementById('emailInput').value = '';
+  document.getElementById('paramReliable').value = '';
+  document.getElementById('paramPersonable').value = '';
+  document.getElementById('paramFast').value = '';
+  document.getElementById('paramSafe').value = '';
+
+  renderEmails(emails);
 }
+
 
 function renderEmails(listToShow) {
   const list = document.getElementById('emailList');

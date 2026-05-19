@@ -140,7 +140,17 @@ function renderAllAudits() {
   });
 
   document.getElementById('auditCount').innerText = emails.length;
+
+  // Add "Back to Recent (3)" button
+  const backBtn = document.createElement("button");
+  backBtn.className = "btn";
+  backBtn.textContent = "Back to Recent (3)";
+  backBtn.onclick = function() {
+    renderEmails(emails);
+  };
+  list.appendChild(backBtn);
 }
+
 
 function toggleEmail(id) {
   const box = document.getElementById('email' + id);

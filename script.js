@@ -11,9 +11,28 @@ function login() {
     document.getElementById("loginSection").style.display = "none";
     document.getElementById("trackerSection").style.display = "block";
   } else {
-    alert("Invalid credentials. Try admin / 1234");
+    // Keep tracker hidden
+    document.getElementById("trackerSection").style.display = "none";
+    document.getElementById("loginSection").style.display = "block";
+
+    // Clear password field
+    document.getElementById("password").value = "";
+
+    // Show error modal
+    const modal = document.getElementById("loginErrorModal");
+    modal.style.display = "block";
+
+    // Trigger shake animation
+    modal.classList.remove("shake"); // reset if already applied
+    void modal.offsetWidth;          // force reflow
+    modal.classList.add("shake");
   }
 }
+
+function closeLoginError() {
+  document.getElementById("loginErrorModal").style.display = "none";
+}
+
 
 function logout() {
   localStorage.removeItem("loggedIn");

@@ -93,8 +93,17 @@ function renderEmails(listToShow) {
   const list = document.getElementById('emailList');
   list.innerHTML = '';
 
+  // If no audits, show message
+  if (listToShow.length === 0) {
+    list.innerHTML = `<div class="email-box"><p>No audits saved yet.</p></div>`;
+    document.getElementById('auditCount').innerText = emails.length;
+    return;
+  }
+
   // Decide whether to show all or just 3 recent
-  const displayList = showAll ? listToShow.slice().reverse() : listToShow.slice(-3).reverse();
+  const displayList = showAll 
+    ? listToShow.slice().reverse()        // all audits, newest first
+    : listToShow.slice(-3).reverse();     // last 3 audits, newest first
 
   displayList.forEach((entry) => {
     const summary = entry.text.length > 50 ? entry.text.substring(0, 50) + "..." : entry.text;
@@ -114,7 +123,7 @@ function renderEmails(listToShow) {
 
   document.getElementById('auditCount').innerText = emails.length;
 
-  // Add toggle button at the bottom
+  // Add toggle button if more than 3 audits exist
   if (emails.length > 3) {
     const toggleBtn = document.createElement("button");
     toggleBtn.className = "btn";
@@ -126,6 +135,7 @@ function renderEmails(listToShow) {
     list.appendChild(toggleBtn);
   }
 }
+
 
 
 function toggleEmail(id) {

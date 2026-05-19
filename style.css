@@ -139,7 +139,7 @@ select {
   gap: 8px;
   margin-bottom: 20px;
   position: sticky;   /* makes it stick */
-  top: 70px;          /* adjust depending on header height */
+  top: 60px;          /* adjust depending on header height */
   background: #f9f9f9; /* match page background */
   padding: 10px;
   z-index: 999;       /* ensures it stays above other elements */
@@ -181,4 +181,3 @@ select {
   transform: scale(1.1);
   box-shadow: 0 4px 10px rgba(0,0,0,0.25);
 }
-

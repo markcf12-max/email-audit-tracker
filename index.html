@@ -16,13 +16,12 @@
   <!-- Tracker Section (hidden until login) -->
   <div id="trackerSection" style="display:none;">
     <h1>Email Audit Tracker</h1>
+      <!-- Audit counter under the title -->
+  <div id="auditCounter">Total Audits: <span id="auditCount">0</span></div>
 
     <!-- Logout button -->
     <button class="btn btn-danger" onclick="logout()">Logout</button>
 
-<!-- Floating audit counter + burger -->
-<div id="auditHeader">
-  <div id="auditCounter">Total Audits: <span id="auditCount">0</span></div>
   <div class="burger-menu" onclick="toggleMenu()">☰</div>
 </div>
 
@@ -132,3 +131,4 @@
   <script src="script.js"></script>
 </body>
 </html>
+
